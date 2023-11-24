@@ -1,0 +1,472 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+
+.main{
+
+    display: flex;
+    flex-direction: column;
+    gap: 50px;
+   
+}
+
+.input-cell {
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+    
+}
+
+
+
+
+/* gnereal rules */
+table {
+    width: 100%;
+    height: 100%;
+    border: 1px solid white;
+    border-collapse: collapse;
+    display: block;
+    overflow-y:auto;
+    overflow-x: auto;
+    
+    
+}
+
+th {
+    border: none;
+    background-color: white;
+    padding: 8px;
+    text-align: center;
+    position: relative;
+    margin: 0;
+    width: 200px; /* Fixed width for all heading cells */
+    height: 45px; /* Fixed height for all heading cells */
+}
+
+td {
+    text-align: center;
+  
+    border: 3px solid white;
+    height: 16px; /* Reduce the height */
+    width: 80px; /* Increase the width */
+    position: relative;
+}
+
+
+
+th {
+    padding: 0;
+    background-color: #f2f2f2;
+    text-align: center;
+}
+
+
+
+
+
+/* .table-container */
+
+
+#matchup-table{
+    display: block;
+    /* overflow-y:auto; */
+    /* overflow-x: auto; */
+    
+} 
+
+
+.table-container {
+    width: 70%;
+    height: 500px;
+    overflow: hidden;
+    position: absolute;
+    top: 45%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    
+    
+}
+
+.wrapper{
+    overflow-x: auto;
+    overflow-y: auto;
+    padding-left: 20px
+}
+
+
+
+th.rotate {
+    height: 100px;
+    margin-left: 40px;
+    margin-right: 40px;
+    white-space: nowrap;
+    writing-mode: horizontal-tb;
+    text-orientation: upright;
+}
+
+th.rotate > div {
+    transform: translate(0, 0) rotate(0);
+    width: 35px;
+    white-space: normal;
+    margin: 0;
+}
+
+.cell-info {
+    position: absolute;
+    background: black;
+    color: white;
+    border: 1px solid #ccc;
+    padding: 5px;
+    font-size: 12px;
+    pointer-events: none;
+    z-index: 5;
+    width: 200px;
+    height: 170px;
+    /* top: -30px; */
+    opacity: 0;
+    transition: opacity 0.2s;
+    pointer-events: none;
+    font-weight: 200;
+    
+    top: -30px;
+    left: 0;
+    
+}
+
+
+.tool-tip{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    
+}
+
+td:hover .cell-info {
+    opacity: 1;
+}
+
+td:hover .cell-info:hover {
+    opacity: 1;
+}
+
+
+td .cell-info {
+    right: 60px;
+    left: auto;
+    top: -95px;
+}  
+ 
+
+.cell-info strong {
+    font-weight: bold;
+    color: white;
+} 
+
+.marked-cell {
+    position: relative;
+}
+
+.marked-cell::before {
+    content: '/';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 18px;
+    font-weight: bold;
+    background-color: #E6E6FA;
+}
+
+.archetype-label {
+    display: inline-block; 
+    vertical-align: top;
+    margin-right: 10px;
+}
+
+.triangle-up {
+    font-size: 14px;
+    margin: 0;
+    padding: 0;
+}
+.triangle-down {
+    right: 67px;
+    top: 15px;
+    font-size: 14px;
+    margin: 0;
+    padding: 0;
+}
+
+.archetype-input {
+    margin-left: 15px;
+    margin-top: 20px;
+    border: 2px solid grey;
+    height: 20px;
+    padding: 5px;
+    
+    display: inline-block; /* Add this line to make it inline with the first row */
+}
+
+
+/* 
+#firstcolrow {
+    width: 60px;
+}  */
+
+.logo {
+    display: inline;
+    width: 20px;
+    height: 20px;
+}
+.rotate .deck-info{
+    font-size: small;
+    width: 38px;
+    margin: auto 20px;
+    
+}
+
+/* 
+.deck-info {
+    
+    display: flex;
+    flex-direction: column;
+    margin-left: 20px;
+    margin-top: 10px;
+    align-items: center;
+    text-align: center;
+    flex-wrap:nowrap;
+} */
+
+.deckinfo{
+    padding: 0 10px;
+    font-size: 14px;
+    display: flex;
+    margin-left: 0;
+    margin-top: 10px ;
+    align-items: center;
+    justify-content: flex-start;
+    text-align: center;
+    flex-wrap: wrap;
+    flex-wrap: wrap;
+    overflow: hidden;
+    flex-direction: row;
+} 
+.deck-info .logo-container {
+    display: flex; /* Use flex display for logo container */
+    flex-wrap: nowrap; /* Allow text to wrap */
+    align-items: center; /* Vertically align items */
+    gap: 5px; /* Add gap between logo and text */
+}
+
+.deck-info > span {
+    font-size: 14px;
+}
+.logo-container {
+     display: inline;
+     /* margin-left: 15px; */
+     /* margin-right: 5px; Adjust the margin as needed to control spacing */
+}
+
+
+#matchup-table thead {
+    /* padding: 0 40px 0 0; */
+    position: sticky;
+    top: 0;
+    background-color: #f2f2f2; /* You can change the background color as needed */
+    z-index: 5; /* Ensures it's displayed above other content */
+}
+#matchup-table th:first-child{
+    padding: 0 30px 0 0;
+    position: sticky;
+    left: 0;
+    background-color: #f2f2f2; 
+    z-index: 3; 
+    width: 350px; 
+}
+
+.name {
+    position: absolute;
+    left: 70px;
+}
+
+
+
+/* playratecontainer */
+
+.playrate-td{
+    vertical-align: bottom;
+    border: 3px solid white;
+    height: 110px;
+    /* width: 100px; */
+    padding: 0;
+    margin-left: 50px;
+    margin-right: 40px;
+    align-items: center;
+    justify-content: center;
+}
+
+
+.playrate-table {
+    width: 100%;
+    border: 2px solid white;
+    border-collapse: collapse;
+    
+    /* border-collapse: separate; */
+     /* border-spacing: 0 15px; */
+   
+    border: 2px solid white; 
+    
+    border-spacing: 9px 15px;
+     
+}
+.playratecontainer {
+    justify-content: end;
+    width: 68%;
+    height: 183px;
+    overflow: hidden;
+    position: absolute;
+    top: 93%;
+    left: 51%;
+    transform: translate(-50%, -50%);
+} 
+
+
+
+
+.playratecontainer .playrate-table .firstcell {
+    width: 162px; /* Set the width to match the cells in the first column of the match-up table */
+}
+
+
+
+.firstcell {
+   
+    text-align: center;
+    margin-top: 20px;
+    margin-right: 28px;
+    width: 150px;
+    height: 50px;
+    
+}
+
+.playratecontainer .playrate-table tbody tr th {
+    position: sticky;
+    left: 0;
+    background-color: #f2f2f2; /* You can change the background color as needed */
+    z-index: 20; 
+    overflow: visible;
+}
+.bar-graph {
+    width: 100%;
+    height: 100%;
+    background-color: #f2f2f2;
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+}
+
+.bar {
+    /* height: 100%; */
+    /* margin: 0 20px 0 20px ; */
+    margin: 0 6px;
+    width: 63px;
+    background-color: rgba(23, 23, 232, 0.349); /* Green color for the bar */
+    overflow: visible;
+    /* transition: width 1s; Add a smooth transition effect*/
+} 
+
+
+.label {
+    text-align: center;
+    padding: 2px;
+    color: #000;
+}
+
+
+
+.winratecontainer {
+    position: absolute;
+    top: 45.48%;
+    left: 88%;
+    transform: translate(-50%, -50%);
+    width: 100px;
+    height: 430px;
+    overflow: hidden;
+    
+}
+
+.winrate-table {
+    border: 1px solid white;
+    overflow: hidden;
+    border-spacing: 2px;
+    width: 100%;
+}
+#winrateTable tr th{
+    font-size: small;
+    height: 42.6px;
+    width: 70px;
+}
+
+.winrateFirstcell {
+    position: sticky;
+    top: 0;
+    height: 45px;
+    font-size: small;
+    text-align: center;
+    background-color: white;
+    border: none;
+    z-index: 5;
+}
+
+
+
+
+    
+
+
+#curent-player{
+justify-content: flex-start;
+height: 20%;
+width: 80%;
+text-align: center;
+font-size: large;
+}
+.rest-content{
+justify-content: center;
+text-align: center;
+height: 40%;
+width: 60%;
+}
+.opponent-player{
+font-size: small;
+}
+
+
+/* loader */
+
+
+#loader-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 100vh;
+}
+
+#loader-container img {
+    margin-left: 100%;
+    
+}
+
+
+
+#content {
+    display: none; /* Initially hidden */
+}
+
