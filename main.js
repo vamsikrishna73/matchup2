@@ -1,3 +1,5 @@
+
+
 const matchupTableContainer = document.querySelector('.table-container');
 const playrateTableContainer = document.querySelector('.playratecontainer');
 function calculateBackgroundColor(score) {
@@ -85,7 +87,7 @@ function getLogoURL(deckName) {
         if (regions.length > 2) {
             let array = []
             regions.forEach(element => {
-                region = element.trim().toLowerCase();
+                const region = element.trim().toLowerCase();
                 const logoURL = `https://masteringruneterra.com/wp-content/plugins/deck-viewer/assets/images/factions/${region}.svg`;
                 array.push(logoURL)
             });
@@ -113,6 +115,7 @@ function fetchData(url) {
             throw error;
         });
 }
+
 
 
 
@@ -208,7 +211,7 @@ async function populateTable() {
                 <div class="deckinfo">
                     
                     <span class="logo-container" style="margin-right: 10px;">
-                        <img class="logo" src="${logoURL1}" alt="Region 1">
+                        <img class="logo" src="${logoURL1}" alt="Region 1" originalUrl="${logoURL1}">
                            
                     </span>
                     <span class="name">${deck.deck_name.replace(/\(.*\)/, '').substring(0, 14)}</span>
@@ -220,8 +223,8 @@ async function populateTable() {
                 <div class="deckinfo">
                     
                     <span class="logo-container" style="margin-right: 5px;">
-                        <img class="logo" src="${logoURL1}" alt="Region 1">
-                        <img class="logo" src="${logoURL2}" alt="Region 2">   
+                        <img class="logo" src="${logoURL1}" alt="Region 1" originalUrl="${logoURL1}">
+                        <img class="logo" src="${logoURL2}" alt="Region 2" originalUrl="${logoURL2}">   
 
                            
                     </span>
@@ -234,9 +237,9 @@ async function populateTable() {
                 <div class="deckinfo">
                    
                     <span class="logo-container">
-                        <img class="logo" src="${logoURL1}" alt="Region 1">
-                        <img class="logo" src="${logoURL2}" alt="Region 2">   
-                        <img class="logo" src="${logoURL3}" alt="Region 3"> 
+                        <img class="logo" src="${logoURL1}" alt="Region 1" originalUrl="${logoURL1}">
+                        <img class="logo" src="${logoURL2}" alt="Region 2" originalUrl="${logoURL2}">   
+                        <img class="logo" src="${logoURL3}" alt="Region 3" originalUrl="${logoURL3}"> 
                           
                     </span>
                     <span class="name">${deck.deck_name.replace(/\(.*\)/, '').substring(0, 14)}</span>
@@ -382,16 +385,6 @@ async function populateTable() {
 
 
 
-
-        // Call the populateTable function to start populating the table
-
-        // populateTable();
-
-
-// ...
-
-
-
 // Add a scroll event listener to the Match-Up table container
 matchupTableContainer.querySelector("table").addEventListener('scroll', function() {
     // Synchronize the scroll position of the Play rate table container
@@ -455,24 +448,19 @@ async function populatePlayrateTable() {
 }
 
 
-// Call the function to populate the playrate table
-// populatePlayrateTable();
 
 
 
 
-// Get references to the table containers
-// const matchupTableContainer = document.querySelector('.table-container');
-// const playrateTableContainer = document.querySelector('.playratecontainer');
 
-// Add a scroll event listener to the Match-Up table container
+
 matchupTableContainer.addEventListener('scroll', function() {
     // Synchronize the scroll position of the Play rate table container
     playrateTableContainer.querySelector("table").scrollLeft = matchupTableContainer.querySelector("table").scrollLeft;
 });
 
 
-// const playrateCells = Array.from(playrateTable.querySelectorAll('td:not(.firstcell)'));
+
 
 
 
@@ -485,6 +473,7 @@ async function winrateTable() {
     const firstrow = document.createElement("tr")
     const firstheading = document.createElement("th")
     firstheading.classList.add("winrateFirstcell")
+    firstheading.style.padding = "0 5px 0 0"
     firstheading.innerHTML = '<div><p>EW</p><span><button id="winrateUp">↑</button><button id="winrateDown">↓</button></span></div>'
     firstrow.appendChild(firstheading)
     firstcell.appendChild(firstrow)
@@ -521,14 +510,17 @@ async function winrateTable() {
 }
 
 
-// winrateTable();
 
 
 fetchData('matchupData.json')
     .then(data => {
+        console.log(data)
         populateTable(data);
+
         populatePlayrateTable(data);
         winrateTable(data);
+        
+        
         
     })
     .catch(error => {
@@ -544,6 +536,7 @@ function extractNumericPart(winrateCell) {
     // Extract numeric part (excluding percentage sign) and convert to a number
     return parseFloat(winrateCell.textContent.replace('%', ''));
 }
+
 
 
 
@@ -611,31 +604,13 @@ function sortTable(order) {
 
 
 
-function filterTable(filterValue) {
-    const table = document.getElementById('matchup-table');
-    const winrateTable = document.getElementById("winrateTable")
-    console.log(winrateTable)
-    const rows = table.getElementsByTagName('tr');
-    const rows2 = winrateTable.getElementsByTagName('tr');
-    const lowercase = filterValue.toLowerCase()
-    
 
-    // Loop through all rows and hide those that don't match the filter
-    for (let i = 1; i < rows.length; i++) { // Start from 1 to skip the header row
-        const firstCell = rows[i].getElementsByTagName('th')[0]; // Get the first cell in the current row
-        const cellText = firstCell.textContent.toLowerCase();
 
-        // Show or hide the row based on the filter result
-        if (cellText.includes(lowercase)) {
-            rows[i].style.display = '';
-            rows2[i].style.display = '';
-        } else {
-            rows[i].style.display = 'none';
-            rows2[i].style.display = 'none';
-            
-        }
-    }
-}
+
+
+
+
+
 
 
 
@@ -652,38 +627,254 @@ matchupTableContainer2.addEventListener('scroll', function() {
 
 
 
-// function getInput(){
-//     const filterInput = document.getElementById("inputid");
-//     console.log(filterInput)
-//     return filterInput
-// }
 
-// document.addEventListener('DOMContentLoaded', function () {
-//     // Your code here, including the part where you add an event listener to the 'archetype-input' element
-//     console.log("this is DOM content loaded function")
-//     const archetypeInput = document.getElementById('inputid');
-//     console.log(archetypeInput)
-//     if (archetypeInput) {
+
+document.querySelector('table').addEventListener('mouseover', function (event) {
+    const target = event.target;
+    const grandparent = target.closest('.rotate');
+
+    if (target.classList.contains('logo') && !grandparent) {
+        showStarIcon(target);
+    }
+});
+
+document.querySelector('table').addEventListener('mouseout', function (event) {
+    const target = event.target;
+    const grandparent = target.closest('.rotate');
+
+    if (target.classList.contains('logo') && !grandparent) {
+        hideStarIcon(target);
+    }
+});
+
+document.querySelector('table').addEventListener('click', function (event) {
+    const target = event.target;
+    const grandparent = target.closest('.rotate');
+    const validGrandparent = target.closest('.logo-container')
+
+    if (target.classList.contains('logo') && !grandparent) {
+        const logos = validGrandparent.querySelectorAll('.logo');
+
+        // Check if any logo is favorited
+        if (logos.length > 0) {
+            let isFavorited = logos[0].classList.contains('favorite');
+
+            logos.forEach(logo => {
+                if (isFavorited) {
+                    logo.classList.remove('favorite');
+                    isFavorited = false
+                    hideStarIcon(logo);
+                } else {
+                    logo.classList.add('favorite');
+                    isFavorited = true
+                    showStarIcon(logo);
+                }
+            });
+
+            // Your additional logic for favoriting/unfavoriting the entire cell
+            // ...
+
+            // Log to the console for testing
+            alert(`Cell favorited: ${isFavorited}`);
+        }
+    }
+});
+
+function showStarIcon(image) {
+    image.src = "./star.png"; // Replace with your star icon path
+}
+
+function hideStarIcon(image) {
+    const originalUrl = image.getAttribute('originalUrl');
+    if (originalUrl) {
+        image.src = originalUrl;
+    }
+}
+
+// Your existing toggleFavorite function remains the same
+function toggleFavorite(image) {
+    if (image.classList.contains('favorite')) {
+        // If it's already a favorite, remove the class and update data-original-src
+        image.classList.remove('favorite');
+        hideStarIcon(image);
+        // Your JavaScript logic for unfavoriting
+        alert("Logo unfavorited!");
+    } else {
+        // If it's not a favorite, add the class and update data-original-src
+        image.classList.add('favorite');
+        showStarIcon(image);
+        // Your JavaScript logic for favoriting
+        alert("Logo favorited!");
+    }
+}
+
+
+// Close the dropdown list when clicking outside the input field
+document.addEventListener('click', function(event) {
+      const dropdownList = document.getElementById('dropdown-list');
+      if (event.target !== document.getElementById('inputField') && event.target.parentNode !== dropdownList) {
+        dropdownList.style.display = 'none';
+      }
+});
+
+
+ async function showDropdown() {
+      const liElementsArray = [];
+      const inputText = document.querySelector("#matchup-table thead tr #firstcellrow input").value.toLowerCase();
+      const dropdownList = document.getElementById('dropdown-list');
+     
+      
+    //   const values = ['Apple', 'Banana', 'Blueberry', 'Cherry', 'Grapes', 'Orange', 'Strawberry'];
+
+      const data = await fetchData('matchupData.json')
+      const deckData = data.data;
+
+    // Clear previous list items
+      dropdownList.innerHTML = '';
+
+      deckData.forEach(deck => {
+            const li = document.createElement("li");
+            const [logoURL1, logoURL2,logoURL3] = getLogoURL(deck.deck_name);
+            if (logoURL1 == null && logoURL2 == null && logoURL3 == null) {
+                li.innerHTML = `
+                <div class="deck-info">
+                    ${deck.deck_name}
+                   
+                </div>
+            `;
+            }
+            else if (logoURL1 != null && logoURL2 == null && logoURL3 == null) {
+                li.innerHTML = `
+                <div class="deck-info">
+                    
+                    <span class="logo-container">
+                        <img class="logo" src="${logoURL1}" alt="Region 1">
+
+                    </span>
+                    ${deck.deck_name.replace(/\(.*\)/, '')}
+                </div>
+            `;
+            }
+            else if (logoURL1 != null && logoURL2 != null && logoURL3 == null) {
+                li.innerHTML = `
+                <div class="deck-info">
+                    
+                    <span class="logo-container" >
+                        <img class="logo" src="${logoURL1}" alt="Region 1">   
+                        <img class="logo" src="${logoURL2}" alt="Region 2">    
+                    </span>
+                    ${deck.deck_name.replace(/\(.*\)/, '')}
+                </div>
+            `;
+            }
+            else{
+                li.innerHTML = `
+                <div class="deck-info">
+                    
+                    <span class="logo-container">
+                        <img class="logo" src="${logoURL1}" alt="Region 1">   
+                        <img class="logo" src="${logoURL2}" alt="Region 2"> 
+                        <img class="logo" src="${logoURL3}" alt="Region 3">
+                            
+                    </span>
+                    ${deck.deck_name.replace(/\(.*\)/, '')}
+                </div>
+            `;
+            }
+            liElementsArray.push(li)
+        });
+
+        
+       
+
+
+
+
+
+      // If no input is entered, show all values
+      if (!inputText) {
+        liElementsArray.forEach(listItem => {
+          
+          
+          listItem.addEventListener('click', () => {
+            //add logic here
+            document.getElementById('inputField').value = value;
+            console.log("clicked")
+            
+            dropdownList.style.display = 'none';
+          });
+          dropdownList.appendChild(listItem);
+        });
+        dropdownList.style.display = 'block';
+        return;
+      }
+
+      // Filter values based on input
+      const filteredLiElements = liElementsArray.filter(li => {
+            const deckName = li.querySelector('.deck-info').textContent.trim().toLowerCase();
+            console.log(deckName)
+            return deckName.includes(inputText.toLowerCase());
+        });
+
+      // Populate the dropdown list
+      filteredLiElements.forEach(listItem => {
+        
+        
+        listItem.addEventListener('click', () => {
+            //add logic here
+          document.getElementById('inputField').value = value;
+          dropdownList.style.display = 'none';
+        });
+        dropdownList.appendChild(listItem);
+      });
+
+      // Show or hide the dropdown list
+      if (filteredLiElements.length > 0) {
+        dropdownList.style.display = 'block';
+      } else {
+        dropdownList.style.display = 'none';
+      }
+}
+
+
+
+
+
+
+window.onload = function() {
+    setTimeout(function() {
+        console.log("loaded");
+        // Assuming you have an input field with the ID 'yourInputField'
+        const inputField = document.querySelector("#matchup-table thead tr #firstcellrow input");
+
+        // Attach a click event listener to the input field
+        inputField.addEventListener('click', function() {
+            // Run the showDropdown function when the input field is clicked
+            showDropdown();
+        });
+
+    }, 5000);
+};
+
+// window.onload = setTimeout(function() {
+//     console.log("loaded")
+//     const cellinfo = document.querySelectorAll("#matchup-table tbody tr td .cell-info");
+//     // console.log(archetypeInput)
+//     if (cellinfo) {
 //         // Add your event listener here
-//         archetypeInput.addEventListener('input', function () {
-//             // Your input event handling code
-//             filterTable(event.target.value);
+//         cellinfo.forEach(element => {
+//             element.addEventListener("mouseover", function() {
+//                 if (element.scrollHeight > element.clientHeight) {
+//                     console.log('The content is overflowing!');
+//                     element.style.top = "-60px"
+//                     // You can add your code to handle the overflow here
+//                   } else {
+//                     console.log('The content is not overflowing.');
+//                   }
+//             })
 //         });
 //     }
-// });
-
-window.onload = setTimeout(function() {
-    console.log("loaded")
-    const archetypeInput = document.querySelector("#matchup-table thead tr #firstcellrow input");
-    console.log(archetypeInput)
-    if (archetypeInput) {
-        // Add your event listener here
-        archetypeInput.addEventListener('input', function () {
-            // Your input event handling code
-            filterTable(event.target.value);
-        });
-    }
     
    
-}, 5000)
+// }, 5000)
 
